@@ -1,4 +1,3 @@
-////
 import React, { useState } from "react";
 import TodoItem from "@/components/TodoItem";
 import DatePicker from "react-datepicker";
@@ -76,8 +75,9 @@ const TodoList = () => {
     }
   };
 
-
   const borderStyle = " text-center border border-blue-500 rounded ";
+
+
   // 컴포넌트를 렌더링합니다.
   return (
     <div className={styles.container}>
@@ -163,8 +163,16 @@ const TodoList = () => {
           />
         ))}
       </ul>
+      <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+      <df-messenger
+        intent="WELCOME"
+        chat-title="AIED-Tutor"
+        agent-id="bcf6e68b-bd69-450a-92f6-22bedab1ff1b"
+        language-code="ko"
+      ></df-messenger>
     </div>
   );
 };
+
 
 export default TodoList;
