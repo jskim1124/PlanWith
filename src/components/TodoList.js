@@ -1,18 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoItem from "@/components/TodoItem";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "@/styles/TodoList.module.css";
 
 // TodoList 컴포넌트를 정의합니다.
-const TodoList = () => {
+export default function TodoList () {
   // 상태를 관리하는 useState 훅을 사용하여 할 일 목록과 입력값을 초기화합니다.
   const [todos, setTodos] = useState([]);
+
   const [input, setInput] = useState("");
   const [errorcode, seterrorcode] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [deadline, setDeadline] = useState("");
   const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    fetch('/api/todo')
+      .then(res => res.json())
+      .then(data => setTodos(data));
+  }, []);
+
+  const postTodo = (todoList) => {
+    fetch('/api/todo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ todo: todoList })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data.message);
+      })
+  }
+
+
+  postTodo(todos)
+
 
   // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addTodo = () => {
@@ -32,7 +55,8 @@ const TodoList = () => {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    setTodos([...todos, {id: Date.now(), text: input, completed: false, deadline: deadline, category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()}]);
+    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline, category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
+    setTodos([...todos, newTodo]);
     setInput("");
     setDeadline("");
     setCategory("");
@@ -41,6 +65,8 @@ const TodoList = () => {
     setTimeout(() => {
       setIsButtonDisabled(false); // 버튼 활성화
     }, 1000);
+
+
 
   };
 
@@ -55,7 +81,9 @@ const TodoList = () => {
       todos.map((todo) => {
         return todo.id === id ? { ...todo, completed: !todo.completed } : todo;
       })
+      
     );
+
   };
 
   // deleteTodo 함수는 할 일을 목록에서 삭제하는 함수입니다.
@@ -76,6 +104,7 @@ const TodoList = () => {
   };
 
   const borderStyle = " text-center border border-blue-500 rounded ";
+  
 
 
   // 컴포넌트를 렌더링합니다.
@@ -172,7 +201,4 @@ const TodoList = () => {
       ></df-messenger>
     </div>
   );
-};
-
-
-export default TodoList;
+}
