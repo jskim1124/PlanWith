@@ -153,10 +153,12 @@ export default function TodoList () {
           }}
         >
           <option value="">Select category</option>
-          <option value="Work">Work</option>
-          <option value="Study">Study</option>
-          <option value="Exercise">Exercise</option>
-          <option value="other">Other</option>
+          <option value="Work">수행평가</option>
+          <option value="Suneung">모의고사</option>
+          <option value="naesin">내신준비</option>
+          <option value="volun">봉사활동</option>
+          <option value="other">기타</option>
+          {["Work","Suneung","nasin","volun","other",""].includes(category)? "":<option value={category}>{category}</option>}
         </select>
 
       </li>
