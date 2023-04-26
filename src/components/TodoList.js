@@ -58,7 +58,7 @@ export default function TodoList () {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline.toString(), category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
+    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline.toString().substring(4,15), category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
     setTodos([...todos, newTodo]);
     setInput("");
     setDeadline("");
