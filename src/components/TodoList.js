@@ -114,7 +114,7 @@ export default function TodoList () {
   return (
     <div className={styles.container}>
       <h1 className="text-xl mb-4 font-bold underline underline-offset-4 decoration-wavy">
-        학습플랜 설계 플랫폼 - PlanWith
+        학습플랜 지원 플랫폼 - PlanWith
       </h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
 
@@ -153,12 +153,12 @@ export default function TodoList () {
           }}
         >
           <option value="">Select category</option>
-          <option value="Work">수행평가</option>
-          <option value="Suneung">모의고사</option>
-          <option value="naesin">내신준비</option>
-          <option value="volun">봉사활동</option>
+          <option value="수행평가">수행평가</option>
+          <option value="모의고사">모의고사</option>
+          <option value="내신준비">내신준비</option>
+          <option value="봉사활동">봉사활동</option>
           <option value="other">기타</option>
-          {["Work","Suneung","nasin","volun","other",""].includes(category)? "":<option value={category}>{category}</option>}
+          {["수행평가","모의고사","내신준비","봉사활동","other",""].includes(category)? "":<option value={category}>{category}</option>}
         </select>
 
       </li>
