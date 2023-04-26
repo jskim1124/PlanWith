@@ -8,17 +8,21 @@ import styles from "@/styles/TodoList.module.css";
 export default function TodoList () {
   // 상태를 관리하는 useState 훅을 사용하여 할 일 목록과 입력값을 초기화합니다.
   const [todos, setTodos] = useState([]);
-
   const [input, setInput] = useState("");
   const [errorcode, seterrorcode] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [deadline, setDeadline] = useState("");
   const [category, setCategory] = useState("");
-
+  
   useEffect(() => {
-    fetch('/api/todo')
-      .then(res => res.json())
-      .then(data => setTodos(data));
+    const intervalId = setInterval(() => {
+      fetch('/api/todo')
+        .then((res) => res.json())
+        .then((data) => setTodos(data))
+        .catch((err) => console.log(err));
+    }, 1000);
+    
+    return () => clearInterval(intervalId); // 언마운트 시 intervalId 클리어
   }, []);
 
   const postTodo = (todoList) => {
@@ -32,7 +36,6 @@ export default function TodoList () {
         console.log(data.message);
       })
   }
-
 
   postTodo(todos)
 
@@ -55,7 +58,7 @@ export default function TodoList () {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline, category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
+    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline.toString(), category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
     setTodos([...todos, newTodo]);
     setInput("");
     setDeadline("");
