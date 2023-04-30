@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TodoItem from "@/components/TodoItem";
 import TimePicker from "react-timepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import styles from "@/styles/TodoList.module.css";
 
 // TodoList 컴포넌트를 정의합니다.
@@ -16,7 +15,7 @@ export default function TodoList () {
   
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetch('/api/todo')
+      fetch('api/todo')
         .then((res) => res.json())
         .then((data) => setTodos(data))
         .catch((err) => console.log(err));
@@ -26,16 +25,17 @@ export default function TodoList () {
   }, []);
 
   const postTodo = (todoList) => {
-    fetch('/api/todo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ todo: todoList })
+    fetch("api/todo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ todo: todoList }),
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log(data.message);
       })
-  }
+      .catch((err) => console.log(err));
+  };
 
   postTodo(todos)
 
@@ -126,7 +126,6 @@ export default function TodoList () {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress} 
-        
         />
 
         <TimePicker 
@@ -136,7 +135,6 @@ export default function TodoList () {
         placeholderText="Select Time"
         minDate={new Date()}
         onKeyDown={(e) => handleKeyPress(e)}
-        
         />
     
         <select
@@ -204,3 +202,4 @@ export default function TodoList () {
     </div>
   );
 }
+
