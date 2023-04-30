@@ -12,6 +12,7 @@ export default function TodoList () {
   const [category, setCategory] = useState("");
   const [stime, setsTime] = useState("");
   const [ftime, setfTime] = useState("");
+  const [reflect, setReflect] = useState("");
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -122,6 +123,15 @@ export default function TodoList () {
         학습플랜 지원 플랫폼 - PlanWith
       </h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
+
+      <li>
+        <textarea
+         value={reflect}
+         placeholder="오늘 하루 마무리 문장"
+         onChange={(e) => setReflect(e.target.value)}
+         className= "w-full mb-7 border rounded border-black"
+         />
+      </li>
 
       <li className="mb-1">
         <input
