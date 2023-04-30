@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TodoItem from "@/components/TodoItem";
-import DatePicker from "react-datepicker";
+import TimePicker from "react-timepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "@/styles/TodoList.module.css";
 
@@ -12,7 +12,7 @@ export default function TodoList () {
   const [errorcode, seterrorcode] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [category, setCategory] = useState("");
-  const [reflect, setReflect] = useState("");
+  const [time, setTime] = useState("");
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -43,7 +43,7 @@ export default function TodoList () {
   // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addTodo = () => {
     // 입력값이 비어있는 경우 함수를 종료합니다.
-    if (input.trim() === "" || deadline === "" || category === "" ) {
+    if (input.trim() === "" || time === "" || category === "" ) {
       setIsButtonDisabled(true); // 버튼 비활성화
       seterrorcode("할 일과 마감일, 카테고리를 다시 확인하십시오")
       setTimeout(() => {
@@ -58,11 +58,11 @@ export default function TodoList () {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    const newTodo = {id: Date.now(), text: input, completed: false, category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString(), reflect:reflect};
+    const newTodo = {id: Date.now(), text: input, completed: false, category: category, time: time};
     setTodos([...todos, newTodo]);
     setInput("");
-    setDeadline("");
     setCategory("");
+    setTime("");
     setIsButtonDisabled(true); // 버튼 비활성화
     seterrorcode("");
     setTimeout(() => {
@@ -129,11 +129,11 @@ export default function TodoList () {
         
         />
 
-        <DatePicker 
+        <TimePicker 
         className="shadow-lg w-40 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
-        selected={deadline}
-        onChange={(date) => setDeadline(date)}
-        placeholderText="Select deadline"
+        selected={time}
+        onChange={(date) => setTime(date)}
+        placeholderText="Select Time"
         minDate={new Date()}
         onKeyDown={(e) => handleKeyPress(e)}
         
@@ -156,9 +156,8 @@ export default function TodoList () {
           <option value="수행평가">수행평가</option>
           <option value="모의고사">모의고사</option>
           <option value="내신준비">내신준비</option>
-          <option value="봉사활동">봉사활동</option>
           <option value="other">기타</option>
-          {["수행평가","모의고사","내신준비","봉사활동","other",""].includes(category)? "":<option value={category}>{category}</option>}
+          {["수행평가","모의고사","내신준비","other",""].includes(category)? "":<option value={category}>{category}</option>}
         </select>
 
       </li>
