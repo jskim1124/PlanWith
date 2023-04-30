@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import TodoItem from "@/components/TodoItem";
-import TimePicker from "react-timepicker";
 import styles from "@/styles/TodoList.module.css";
 
 // TodoList 컴포넌트를 정의합니다.
@@ -11,7 +10,8 @@ export default function TodoList () {
   const [errorcode, seterrorcode] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [category, setCategory] = useState("");
-  const [time, setTime] = useState("");
+  const [stime, setsTime] = useState("");
+  const [ftime, setfTime] = useState("");
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -43,9 +43,9 @@ export default function TodoList () {
   // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
   const addTodo = () => {
     // 입력값이 비어있는 경우 함수를 종료합니다.
-    if (input.trim() === "" || time === "" || category === "" ) {
+    if (input.trim() === "" || stime === "" || ftime === "" ||  new Date(`1970-01-01T${stime}`) >= new Date(`1970-01-01T${ftime}`) || category === "" ) {
       setIsButtonDisabled(true); // 버튼 비활성화
-      seterrorcode("할 일과 마감일, 카테고리를 다시 확인하십시오")
+      seterrorcode("할 일과 활동 시간, 카테고리를 다시 확인하십시오")
       setTimeout(() => {
         setIsButtonDisabled(false); // 1초 후 버튼 활성화
       }, 1000);
@@ -58,11 +58,12 @@ export default function TodoList () {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    const newTodo = {id: Date.now(), text: input, completed: false, category: category, time: time};
+    const newTodo = {id: Date.now(), text: input, completed: false, category: category, stime: stime, ftime: ftime};
     setTodos([...todos, newTodo]);
     setInput("");
     setCategory("");
-    setTime("");
+    setsTime("");
+    setfTime("");
     setIsButtonDisabled(true); // 버튼 비활성화
     seterrorcode("");
     setTimeout(() => {
@@ -100,6 +101,10 @@ export default function TodoList () {
     );
   };
 
+  const sortTodos = (todos) => {
+    return todos.sort((a,b) => new Date(`1970-01-01T${a.stime}`) - new Date(`1970-01-01T${b.stime}`));
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       addTodo();
@@ -121,24 +126,34 @@ export default function TodoList () {
       <li className="mb-1">
         <input
         type="text"
-        className="shadow-lg w-full p-1 mb-4 border border-gray-300 rounded"
+        className="shadow-lg h-8 w-full p-1 mb-4 border border-gray-300 rounded"
         style={{ width: "500%" }}
         value={input}
+        placeholder="할 일을 입력하세요"
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress} 
         />
-
-        <TimePicker 
-        className="shadow-lg w-40 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
-        selected={time}
-        onChange={(date) => setTime(date)}
-        placeholderText="Select Time"
-        minDate={new Date()}
-        onKeyDown={(e) => handleKeyPress(e)}
+        <input
+        type="time"
+        className="shadow-lg h-8 w-40 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
+        style={{ width: "300%" }}
+        value={stime}        
+        placeholder="시작 시각"
+        onChange={(e) => setsTime(e.target.value)}
+        onKeyPress={handleKeyPress} 
+        />
+        <input
+        type="time"
+        className="shadow-lg h-8 w-40 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
+        style={{ width: "300%" }}
+        value={ftime}
+        placeholder="종료 시각"
+        onChange={(e) => setfTime(e.target.value)}
+        onKeyPress={handleKeyPress} 
         />
     
         <select
-          className="shadow-lg w-40 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
+          className="shadow-lg h-8 w-24 p-1 text-center ml-3 mb-4 border border-gray-300 rounded"
           value={category}
           selected={category}
           onKeyPress={handleKeyPress} 
@@ -150,7 +165,7 @@ export default function TodoList () {
             }
           }}
         >
-          <option value="">Select category</option>
+          <option value="">카테고리</option>
           <option value="수행평가">수행평가</option>
           <option value="모의고사">모의고사</option>
           <option value="내신준비">내신준비</option>
@@ -175,15 +190,15 @@ export default function TodoList () {
       <li className="mb-1">
         <div className={`${borderStyle} w-12`}>완료</div>
         <div className={`${borderStyle} ml-2 w-64`}>할 일</div>
-        <div className={`${borderStyle} ml-2 w-24`}>카테고리</div>
-        <div className={`${borderStyle} ml-2 w-24`}>D-Day</div>
-        <div className={`${borderStyle} ml-2 w-32`}>마감일</div>
+        <div className={`${borderStyle} ml-2 w-32`}>카테고리</div>
+        <div className={`${borderStyle} ml-2 w-24`}>시작시각</div>
+        <div className={`${borderStyle} ml-2 w-24`}>종료시각</div>
         <div className={`${borderStyle} ml-2 w-16`}>제거</div>
       </li>
 
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
-        {todos.map((todo) => (
+        {sortTodos(todos).map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo}
