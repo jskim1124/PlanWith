@@ -11,8 +11,8 @@ export default function TodoList () {
   const [input, setInput] = useState("");
   const [errorcode, seterrorcode] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [deadline, setDeadline] = useState("");
   const [category, setCategory] = useState("");
+  const [reflect, setReflect] = useState("");
   
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -58,7 +58,7 @@ export default function TodoList () {
     //   completed: 완료 여부,
     // }
     // ...todos => {id: 1, text: "할일1", completed: false}, {id: 2, text: "할일2", completed: false}}, ..
-    const newTodo = {id: Date.now(), text: input, completed: false, deadline: deadline.toString().substring(4,15), category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString()};
+    const newTodo = {id: Date.now(), text: input, completed: false, category: category, dday: Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24)).toString(), reflect:reflect};
     setTodos([...todos, newTodo]);
     setInput("");
     setDeadline("");
@@ -179,9 +179,7 @@ export default function TodoList () {
         <div className={`${borderStyle} w-12`}>완료</div>
         <div className={`${borderStyle} ml-2 w-64`}>할 일</div>
         <div className={`${borderStyle} ml-2 w-24`}>카테고리</div>
-        <button 
-        className={`${borderStyle} ml-2 w-24`}
-        >D-Day</button>
+        <div className={`${borderStyle} ml-2 w-24`}>D-Day</div>
         <div className={`${borderStyle} ml-2 w-32`}>마감일</div>
         <div className={`${borderStyle} ml-2 w-16`}>제거</div>
       </li>
