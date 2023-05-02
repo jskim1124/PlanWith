@@ -211,7 +211,7 @@ export default function TodoList () {
       <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
       <df-messenger
         intent="WELCOME"
-        chat-title="PlanWith"
+        chat-title="준서 선배 연락"
         agent-id="bcf6e68b-bd69-450a-92f6-22bedab1ff1b"
         language-code="ko"
       ></df-messenger>
