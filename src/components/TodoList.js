@@ -3,7 +3,7 @@ import TodoItem from "@/components/TodoItem";
 import styles from "@/styles/TodoList.module.css";
 
 // TodoList 컴포넌트를 정의합니다.
-export default function TodoList () {
+const TodoList = () => {
   // 상태를 관리하는 useState 훅을 사용하여 할 일 목록과 입력값을 초기화합니다.
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState("");
@@ -13,32 +13,6 @@ export default function TodoList () {
   const [stime, setsTime] = useState("");
   const [ftime, setfTime] = useState("");
   const [reflect, setReflect] = useState("");
-  
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetch('api/todo')
-        .then((res) => res.json())
-        .then((data) => setTodos(data))
-        .catch((err) => console.log(err));
-    }, 1000);
-    
-    return () => clearInterval(intervalId); // 언마운트 시 intervalId 클리어
-  }, []);
-
-  const postTodo = (todoList) => {
-    fetch("api/todo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ todo: todoList }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.message);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  postTodo(todos)
 
 
   // addTodo 함수는 입력값을 이용하여 새로운 할 일을 목록에 추가하는 함수입니다.
@@ -218,4 +192,6 @@ export default function TodoList () {
     </div>
   );
 }
+
+export default TodoList;
 
